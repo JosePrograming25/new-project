@@ -25,7 +25,7 @@ function pedirNombreProyecto(mensaje) {
 
   // Si no se proporciona el nombre del proyecto, lo solicitamos
   if (!nombreProyecto) {
-    nombreProyecto = await pedirNombreProyecto('No has indicado qué nombre quieres para tu proyecto: ');
+    nombreProyecto = await pedirNombreProyecto('Nombre de proyecto: ');
   }
 
   // Eliminar espacios en blanco al inicio y al final
