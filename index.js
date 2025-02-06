@@ -32,7 +32,7 @@ function preguntar(mensaje) {
   nombreProyecto = nombreProyecto.trim();
 
   // Validar el nombre del proyecto
-  if (!nombreProyecto || nombreProyecto.startsWith('')) {
+  if (!nombreProyecto || nombreProyecto.startsWith(' ')) {
     nombreProyecto = await preguntar('\n\nPor favor, indica el nombre del proyecto: ');
     nombreProyecto = nombreProyecto.trim();
 
