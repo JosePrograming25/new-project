@@ -5,8 +5,8 @@ const path = require('path');
 const { execSync } = require('child_process');
 const readline = require('readline');
 
-// Función para solicitar el nombre del proyecto al usuario
-function pedirNombreProyecto(mensaje) {
+// Función para solicitar input del usuario
+function preguntar(mensaje) {
   return new Promise((resolve) => {
     const rl = readline.createInterface({
       input: process.stdin,
@@ -15,7 +15,7 @@ function pedirNombreProyecto(mensaje) {
 
     rl.question(mensaje, (respuesta) => {
       rl.close();
-      resolve(respuesta);
+      resolve(respuesta.trim());
     });
   });
 }
@@ -25,20 +25,20 @@ function pedirNombreProyecto(mensaje) {
 
   // Si no se proporciona el nombre del proyecto, lo solicitamos
   if (!nombreProyecto) {
-    nombreProyecto = await pedirNombreProyecto('Nombre de proyecto: ');
+    nombreProyecto = await preguntar('\n\nNombre de proyecto: ');
   }
 
   // Eliminar espacios en blanco al inicio y al final
   nombreProyecto = nombreProyecto.trim();
 
   // Validar el nombre del proyecto
-  if (nombreProyecto.startsWith('') || nombreProyecto === '') {
-    nombreProyecto = await pedirNombreProyecto('Por favor, indica el nombre del proyecto: ');
+  if (!nombreProyecto || nombreProyecto.startsWith('')) {
+    nombreProyecto = await preguntar('\n\nPor favor, indica el nombre del proyecto: ');
     nombreProyecto = nombreProyecto.trim();
 
     // Si sigue siendo inválido, mostramos un error y finalizamos
-    if (nombreProyecto.startsWith('') || nombreProyecto === '') {
-      console.error('No has colocado un nombre válido. Error 001.');
+    if (!nombreProyecto || nombreProyecto.startsWith('')) {
+      console.error('No has colocado un nombre válido. Error 001.\n\n');
       process.exit(1);
     }
   }
@@ -54,9 +54,18 @@ function pedirNombreProyecto(mensaje) {
   packageJson.name = nombreProyecto;
   fs.writeJsonSync(packageJsonPath, packageJson, { spaces: 2 });
 
-  // Instalar las dependencias
-  console.log('Instalando dependencias...');
-  execSync('npm install', { cwd: destino, stdio: 'inherit' });
+  // Preguntar al usuario si desea instalar las dependencias
+  const instalarDeps = await preguntar('\n\n¿Deseas instalar las dependencias ahora? (y/n): ');
 
-  console.log(`\n¡Proyecto "${nombreProyecto}" creado exitosamente!`);
+  if (instalarDeps.toLowerCase() === 'y') {
+    console.log('Instalando dependencias...');
+    execSync('npm install', { cwd: destino, stdio: 'inherit' });
+    console.log(`\n¡Proyecto "${nombreProyecto}" creado y dependencias instaladas exitosamente!`);
+  } else {
+    console.log(`\n¡Proyecto "${nombreProyecto}" creado exitosamente!`);
+    console.log('Para continuar, ejecuta los siguientes comandos:');
+    console.log(`\n\ncd ${nombreProyecto}`);
+    console.log('\n\nnpm install');
+    console.log('\n\nnpm run dev\n\n');
+  }
 })();
