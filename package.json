@@ -1,0 +1,15 @@
+{
+    "name": "joseprograming25",
+    "version": "1.0.0",
+    "description": "Paquete para crear proyectos basados en mi plantilla.",
+    "bin": {
+      "joprog": "index.js"
+    },
+    "keywords": ["plantilla", "react", "vite"],
+    "author": "Jose García <joseprograming25@gmail.com>",
+    "license": "MIT",
+    "dependencies": {
+      "fs-extra": "^10.0.0"
+    }
+  }
+  
