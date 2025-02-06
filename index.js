@@ -107,10 +107,10 @@ function preguntar(mensaje) {
     }
   } else {
     console.log('\n\nPara continuar, ejecuta los siguientes comandos:');
-    console.log(`\n\ncd ${nombreProyecto}`);
+    console.log(`\ncd ${nombreProyecto}`);
     if (instalarDeps.toLowerCase() !== 'y') {
-      console.log('\n\nnpm install');
+      console.log('npm install');
     }
-    console.log('\n\nnpm run dev\n\n');
+    console.log('npm run dev\n\n');
   }
 })();
