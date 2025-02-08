@@ -40,6 +40,13 @@ function preguntar(mensaje) {
   // Copiar los archivos de la plantilla al nuevo directorio
   fs.copySync(path.join(__dirname, 'plantilla'), destino);
 
+  // Renombrar gitignore a .gitignore
+  const gitignorePath = path.join(destino, 'gitignore');
+  const dotGitignorePath = path.join(destino, '.gitignore');
+  if (fs.existsSync(gitignorePath)) {
+    fs.renameSync(gitignorePath, dotGitignorePath);
+  }
+
   // Actualizar el nombre en package.json
   const packageJsonPath = path.join(destino, 'package.json');
   const packageJson = fs.readJsonSync(packageJsonPath);
@@ -85,10 +92,5 @@ function preguntar(mensaje) {
     }
     console.log('npm run dev');
   }
-
-  // Escribir el archivo de bandera para indicar si se debe cerrar la consola
-  const flagValue = cerrarConsola ? '1' : '0';
-  fs.writeFileSync('close_flag.txt', flagValue, 'utf-8');
-
   process.exit(0);
 })();
